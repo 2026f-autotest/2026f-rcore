@@ -18,28 +18,9 @@
 
 这个选项决定是否复制章节代码，见 [GitHub Fork 文档](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo)。不要只下载 ZIP，也不需要向课程仓库提交 PR。
 
-## 3. 启用 Actions
+## 3. 克隆自己的 Fork
 
-进入自己 Fork 的 **Actions** 页面，按页面提示启用工作流。入口名称通常为 **I understand my workflows, go ahead and enable them**。
-
-可以看到名为 **rCore 2026f grading** 的工作流。参考 [GitHub 工作流启用说明](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/disable-and-enable-workflows)。
-
-## 4. 配置成绩上传 Token
-
-进入自己仓库的 **Settings → Secrets and variables → Actions → New repository secret**。
-
-| 字段 | 填写内容 |
-| --- | --- |
-| Name | `ARCEOS_2026_SPRING_TOKEN` |
-| Secret | 管理员为本课程提供的成绩上传 Token |
-
-这里沿用已验证的 Token 和 Secret 名称。名称中的 `ARCEOS_2026_SPRING` 是现有凭证名称，**本仓库实际提交的课程固定为 2073**。
-
-Fork 不会把上游的 Secret 复制过来，每位学员都必须在自己的仓库配置。不要把 Token 写进代码、README、Issue 或提交记录。`GITHUB_TOKEN` 由 GitHub 自动提供，不需要手动添加；不需要另外配置课程 ID 或 API 地址。见 [GitHub Secrets 文档](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets)。
-
-## 5. 克隆并完成第一项实验
-
-把下列地址中的 `YOUR_GITHUB_LOGIN` 换成自己的 GitHub 登录名。
+本地需要 Git、Python 3 和 [GitHub CLI](https://cli.github.com/)（命令名为 `gh`）。把下列地址中的 `YOUR_GITHUB_LOGIN` 换成自己的 GitHub 登录名。
 
 ```sh
 git clone git@github.com:YOUR_GITHUB_LOGIN/2026f-rcore.git
@@ -52,6 +33,31 @@ cd 2026f-rcore
 ```
 
 进入本地仓库根目录。
+
+## 4. 运行一次初始化脚本
+
+```sh
+python3 setup.py
+```
+
+执行仓库自带的初始化程序。它会读取 `origin` 的推送地址，检查 GitHub CLI 的登录账号是否为该个人仓库所有者，确认章节分支齐全，然后配置自动评测。
+
+首次使用 GitHub CLI 时，脚本会启动 GitHub 登录授权；请登录 Fork 所属的学员账号。随后在终端提示处粘贴管理员提供的课程 Token，输入过程不显示凭证值。
+
+脚本会自动完成两项操作：
+
+- 把 Token 存入自己仓库的 `ARCEOS_2026_SPRING_TOKEN` Secret。
+- 启用 `rCore 2026f grading` 工作流。
+
+以后再次运行时，如果同名 Secret 已存在，脚本会保留原值，不再要求输入 Token。它不会修改实验代码、推送代码或上传成绩。若 Secret 保存成功但启用工作流失败，可以修复报错后重新运行。
+
+这里沿用已验证的课程 Token 和 Secret 名称。名称中的 `ARCEOS_2026_SPRING` 是现有凭证名称，**本仓库实际提交的课程固定为 2073**。GitHub 登录授权用于配置自己的仓库，课程 Token 用于向 OpenCamp 上传成绩，二者不是同一个凭证。
+
+Fork 不会复制上游 Secret。初始化脚本通过 GitHub CLI 的标准输入传递课程 Token，由 CLI 在本地加密后保存；Token 不会写入源码或本地配置文件。实现依据见 [Secret 设置说明](https://cli.github.com/manual/gh_secret_set) 和 [工作流启用说明](https://cli.github.com/manual/gh_workflow_enable)。
+
+`GITHUB_TOKEN` 由 GitHub 自动提供，不需要手动添加；课程 ID 和 API 地址也已配置好。OpenCamp 的账号绑定与训练营报名仍按第 1 步完成。
+
+## 5. 完成并提交实验
 
 ```sh
 git switch ch3
@@ -119,7 +125,10 @@ git push origin ch3
 | push 后没有运行 | 检查 Actions 是否启用、推送的是否为五个评分分支、分支内是否存在 `.github/workflows/build.yml` |
 | 测试没有全部通过 | 打开测试日志定位失败项，修改实验代码后重新 push |
 | 已显示 N/N，任务仍失败 | 检查后续报告检查及检查器退出状态，N/N 本身不足以通过 |
-| `ARCEOS_2026_SPRING_TOKEN is missing` | 在自己的 Fork 中添加同名 Repository secret |
+| `ARCEOS_2026_SPRING_TOKEN is missing` | 在自己的 Fork 根目录运行 `python3 setup.py` |
+| 初始化提示账号与仓库所有者不一致 | 确认克隆的是自己的 Fork，GitHub CLI 登录的也是同一个学员账号 |
+| 初始化提示缺少 `gh` | 先安装 GitHub CLI，再重新运行初始化脚本 |
+| 需要更换已存在的 Token | 在仓库 Settings → Secrets and variables → Actions 中编辑同名 Secret；初始化脚本不会覆盖原值 |
 | `user is not join` | 检查 OpenCamp 已加入对应训练营，并绑定当前仓库所有者的 GitHub 登录名 |
 | 上传接口返回其他错误 | 保留日志中的返回内容，交由课程管理员核对凭证和课程配置 |
 | 写入 `gh-pages` 返回 403 | 检查仓库或组织 Actions 策略是否允许工作流的 `contents: write` 权限 |
