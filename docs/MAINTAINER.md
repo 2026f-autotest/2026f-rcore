@@ -51,7 +51,7 @@ cp students.example.txt students.txt
 python3 enroll.py
 ```
 
-脚本读取名单，先检查组织 Owner 权限、公开模板、全部章节、组织 Secret 策略和所有学员账号，然后逐个创建仓库并配置身份、Secret 访问权限、评分工作流和学员写入权限。输出仓库链接；学员收到邀请后需要接受。
+脚本读取名单，先检查组织 Owner 权限、公开模板、全部章节、组织 Secret 策略和所有学员账号，然后逐个创建仓库并配置身份、Secret 访问权限、评分工作流和学员写入权限。输出仓库链接，并在配置完成后自动触发 **Check student configuration**；学员收到邀请后需要接受。
 
 它不会覆盖已有作业代码、已有学员绑定或课程 Token。重复运行会继续配置属于本模板且账号匹配的仓库。配置中途失败会保留仓库，报出原始 API 错误，修复后重新运行。
 
@@ -59,9 +59,11 @@ GitHub 的模板生成可能需要等待章节出现，脚本最多等待约一�
 
 ## 4. 核对配置并让学员提交
 
-在新学员仓库 Actions 中运行 **Check student configuration**。该工作流检查仓库名、`STUDENT_GITHUB` 和组织 Token 是否可用，不打印 Token、不调用 OpenCamp，也不表示课程 Token 已通过服务端验证。
+建仓脚本配置完账号、凭证访问和权限后，会自动运行 **Check student configuration**。在 Actions 核对它通过；必要时也可手动运行。该工作流检查仓库名、`STUDENT_GITHUB` 和组织 Token 是否可用，不打印 Token、不调用 OpenCamp，也不表示课程 Token 已通过服务端验证。
 
 学员完成[提交指南](STUDENT_GUIDE.md)。其 push 到评分章节会触发官方测试，通过后累计成绩并调用 OpenCamp。只有接口返回 `result=1` 才视为上传成功，最后核对 OpenCamp 学员成绩页面。
+
+GitHub 从模板创建章节时会立即产生 push 事件；此时学员变量可能尚未写入。初始化期间的自动运行会跳过评测和配置检查，绑定完成后由脚本主动检查，后续学员 push 正常评测。
 
 ## 评测和身份规则
 
