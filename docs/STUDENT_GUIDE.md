@@ -6,7 +6,7 @@
 
 在 [OpenCamp rCore 阶段](https://opencamp.cn/os2edu/camp/2026fall/stage/5)加入课程 2073，并绑定自己实际使用的 GitHub 登录账号。
 
-点击[领取作业仓库](https://github.com/2026f-autotest/enroll/issues/new?template=enroll.yml)，选择 **2073** 并提交 Issue。系统直接读取申请人的 GitHub 登录名，不需要手填账号。等待机器人回复，打开邀请链接并接受仓库协作邀请。
+点击[领取作业仓库](https://github.com/2026f-autotest/enroll/issues/new?template=rcore.yml)，点击 **Create** 提交申请。系统直接读取申请人的 GitHub 登录名，不需要手填账号。等待机器人回复，打开邀请链接并接受仓库协作邀请。
 
 分配的仓库为 `2026f-autotest/2026f-rcore-你的GitHub登录名`，包含 `main` 与 `ch1` 至 `ch8`。课程模板 `2026f-autotest/2026f-rcore` 不用于提交个人作业。
 
