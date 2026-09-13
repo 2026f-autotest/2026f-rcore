@@ -27,37 +27,15 @@
 
 GitHub Free 支持公开仓库使用组织 Secret。不要选择只允许私有仓库的策略。见[组织 Secret 文档](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets#creating-secrets-for-an-organization)。
 
-## 2. 维护者完成一次 GitHub 登录
+## 2. 配置统一领取入口
 
-维护者本机安装 Python 3 和 [GitHub CLI](https://cli.github.com/)，在本课程仓库根目录执行：
+自助入口为 [2026f-autotest/enroll](https://github.com/2026f-autotest/enroll)。维护者只需在该入口的仓库 Actions Secrets 配置一次 `ENROLL_GITHUB_TOKEN`，用于创建和配置本组织的课程仓库。该凭证不放入组织共享 Secret 或学员仓库。当前已配置，真实运行见[入口验证记录](https://github.com/2026f-autotest/enroll/blob/main/docs/VALIDATION.md)。
 
-```sh
-gh auth login --hostname github.com --git-protocol ssh --web --skip-ssh-key --scopes admin:org
-```
+## 3. 学员自助申请
 
-`--hostname` 指定 GitHub，`--git-protocol ssh` 选择 SSH，`--web` 在浏览器登录，`--skip-ssh-key` 保留现有 SSH 配置，`--scopes admin:org` 让脚本能够检查组织 Secret 配置，并在使用指定仓库范围时追加授权。请使用本组织 Owner 账号。GitHub 登录授权与 OpenCamp 课程 Token 是两种凭证；课程 Token 不传给建仓脚本。
+学员点击 README 中的领取链接，选择 **2073** 并提交 Issue。Actions 从 `issue.user.login` 读取学员账号，复制 `main`、`ch1` 至 `ch8`，设置 `STUDENT_GITHUB`、分配该仓库写权限并触发配置检查。机器人回复仓库与邀请链接，学员接受邀请即可开始实验。助教无需名单收集或逐个建仓。
 
-这些安装和登录步骤只由维护者执行，学员不需要。
-
-## 3. 按学员名单创建仓库
-
-```sh
-cp students.example.txt students.txt
-```
-
-创建本地名单文件，每行填写一个 GitHub 登录名。`students.txt` 已被 Git 忽略，不会提交到模板。
-
-```sh
-python3 enroll.py
-```
-
-脚本读取名单，先检查组织 Owner 权限、公开模板、全部章节、组织 Secret 策略和所有学员账号，然后逐个创建仓库并配置身份、Secret 访问权限、评分工作流和学员写入权限。输出仓库链接，并在配置完成后自动触发 **Check student configuration**；学员收到邀请后需要接受。
-
-只接入一名学员时，也可以直接执行 `python3 enroll.py 学员GitHub登录名`。已用 `Alayfolk64` 实际完成建仓和重复执行验证，见[验证记录](VALIDATION.md)。
-
-它不会覆盖已有作业代码、已有学员绑定或课程 Token。重复运行会继续配置属于本模板且账号匹配的仓库。配置中途失败会保留仓库，报出原始 API 错误，修复后重新运行。
-
-GitHub 的模板生成可能需要等待章节出现，脚本最多等待约一分钟。批量邀请仍受 GitHub 的速率和邀请限制约束；出现限制时保留已完成仓库，按返回错误稍后继续。
+失败申请由维护者在领取入口的 Actions 输入原 Issue 编号重试；重试仍取原申请人的身份，不会绑定执行重试的助教。无需学员复制 Token 或安装 GitHub CLI。
 
 ## 4. 核对配置并让学员提交
 
@@ -80,3 +58,7 @@ GitHub 从模板创建章节时会立即产生 push 事件；此时学员变量�
 公共文件包括 `.github/` 下的工作流、脚本和回归测试，以及 README、docs、`enroll.py`、`students.example.txt` 和 `.gitignore`。应同步到 `main` 与 `ch1` 至 `ch8`，保留各章原始实验代码，不把整条章节分支互相合并。
 
 模板更新不会自动进入已经分配的学员仓库。更新旧学员仓库时只同步明确修改的公共文件，并保留学员代码、报告和成绩历史。
+
+## 本地应急建仓
+
+保留 `enroll.py` 供维护者处理入口故障。已完成 GitHub CLI 登录的组织 Owner 在本课程目录执行 `python3 enroll.py 学员GitHub登录名`；也可按 `students.example.txt` 创建被忽略的 `students.txt` 后执行 `python3 enroll.py`。课程 Token 不传给脚本，日常接入使用自助领取入口。

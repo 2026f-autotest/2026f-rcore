@@ -7,13 +7,13 @@
 ## 开始实验
 
 1. 在 OpenCamp 加入课程 2073 对应训练营，绑定自己的 GitHub 登录账号。
-2. 向维护者提供 GitHub 登录名，接受分配给你的 `2026f-autotest/2026f-rcore-用户名` 仓库邀请。
+2. 点击[领取作业仓库](https://github.com/2026f-autotest/enroll/issues/new?template=enroll.yml)，选择课程 **2073** 并提交申请；等待机器人回复，然后接受仓库邀请。
 3. 克隆分配的作业仓库，切换章节分支，完成实验代码和报告。
 4. push 到 `ch3`、`ch4`、`ch5`、`ch6` 或 `ch8`，在 Actions 查看评测；通过后自动上传累计成绩。
 
-**学员无需 Fork、安装 GitHub CLI 或填写课程 Token。** 凭证由维护者在组织中集中配置，分配作业仓库时绑定学员身份。模板仓库只提供课程内容，不上传学员成绩。
+**学员无需 Fork、安装 GitHub CLI 或填写课程 Token。** 凭证由维护者在组织中集中配置，领取程序自动读取申请人并绑定学员身份。模板仓库只提供课程内容，不上传学员成绩。
 
-完整操作：[学员领取与提交指南](docs/STUDENT_GUIDE.md)。维护者按[课程配置和建仓流程](docs/MAINTAINER.md)运行 `enroll.py` 分配仓库。
+完整操作：[学员领取与提交指南](docs/STUDENT_GUIDE.md)。维护者按[课程配置和建仓流程](docs/MAINTAINER.md)维护自助领取入口。
 
 ## 分支与实验报告
 
