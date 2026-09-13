@@ -10,7 +10,10 @@ permissions:
 
 jobs:
   configuration:
-    if: github.repository_owner == '2026f-autotest' && github.event.repository.name != '2026f-rcore'
+    if: >-
+      github.repository_owner == '2026f-autotest' &&
+      github.event.repository.name != '2026f-rcore' &&
+      (github.event_name == 'workflow_dispatch' || vars.STUDENT_GITHUB != '')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
