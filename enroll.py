@@ -89,6 +89,8 @@ def enroll(student, secret):
     invitation = api("PUT", endpoint + "/collaborators/" + login, {"permission": "push"})
     status = "Invitation created; the student must accept it" if invitation else "Repository access is active"
     print(f"{status}: https://github.com/{repository}", flush=True)
+    api("POST", endpoint + "/actions/workflows/check-config.yml/dispatches", {"ref": "main"})
+    print(f"Configuration check started: https://github.com/{repository}/actions", flush=True)
 
 
 def main():
