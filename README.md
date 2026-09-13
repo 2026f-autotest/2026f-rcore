@@ -8,9 +8,9 @@
 
 1. 在 OpenCamp 加入对应训练营，绑定自己的 GitHub 账号。
 2. Fork [本仓库](https://github.com/Alayfolk64/2026f-rcore)，**取消勾选 `Copy the main branch only`**，保留 `main` 和 `ch1` 至 `ch8`。
-3. 在自己的 Fork 中启用 **Actions**。
-4. 在 **Settings → Secrets and variables → Actions** 添加 `ARCEOS_2026_SPRING_TOKEN`，值使用管理员提供的课程 Token。
-5. 克隆自己的仓库，切换实验分支，完成代码和报告后 push。Actions 自动测试，通过后上传累计成绩。
+3. 安装 [GitHub CLI](https://cli.github.com/)，克隆自己的 Fork。
+4. 在仓库根目录运行 `python3 setup.py`，按提示登录 GitHub 并粘贴一次课程 Token。脚本自动保存 Secret 并启用 Actions，已有凭证时保留原值。
+5. 切换实验分支，完成代码和报告后 push。Actions 自动测试，通过后上传累计成绩。
 
 完整操作说明：[从 Fork 到自动评测](docs/FORK_GUIDE.md)。每个章节已经配好 CI，无需 GitHub Classroom，也无需向上游提交 PR。
 
