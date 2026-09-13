@@ -62,3 +62,7 @@ GitHub 从模板创建章节时会立即产生 push 事件；此时学员变量�
 ## 本地应急建仓
 
 保留 `enroll.py` 供维护者处理入口故障。已完成 GitHub CLI 登录的组织 Owner 在本课程目录执行 `python3 enroll.py 学员GitHub登录名`；也可按 `students.example.txt` 创建被忽略的 `students.txt` 后执行 `python3 enroll.py`。课程 Token 不传给脚本，日常接入使用自助领取入口。
+
+## 领取完成的判断
+
+自助入口先使用 `preparing-` 临时仓库名，准备期间评测和上传均跳过。入口等待本次配置检查实际通过后，分配权限，最后改成正式仓库名并回复邀请链接；失败保留临时仓库供重试。网络重试和排队规则见[入口维护流程](https://github.com/2026f-autotest/enroll/blob/main/docs/MAINTAINER.md)。已有正式学员仓库保留代码并重新检查。
