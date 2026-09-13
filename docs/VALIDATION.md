@@ -155,3 +155,9 @@ python3 -m unittest discover -s .github/tests
 在仓库根目录执行全部回归测试；`-s` 指定测试文件所在目录。当时 GitHub CLI 的真实 Secret 写入及第二个学员账号的完整初始化尚未运行，CLI 登录检查返回 `You are not logged into any GitHub hosts. To log in, run: gh auth login`。这是个人版阶段的历史状态；组织版已完成登录和首个真实建仓，见本页开头。这些模拟用例不代表第二个真实账号已经配置成功。
 
 本次未修改评分工作流、检查器或上传协议，之前五个分支的真实 CI 验证仍对应当前评分实现。
+
+## 自助领取与秋冬季页面核对（2026-09-14）
+
+统一入口 [2026f-autotest/enroll](https://github.com/2026f-autotest/enroll) 已启用。真实 [申请 #1](https://github.com/2026f-autotest/enroll/issues/1) 在配置建仓凭证后重试成功，读取原申请人 `Alayfolk64`，配置已有学员仓库并回复链接；[配置检查 34777555641](https://github.com/2026f-autotest/2026f-rcore-Alayfolk64/actions/runs/34777555641) 成功。普通外部学员接受邀请尚未用第二个账号实测。
+
+已只读核对 [OpenCamp 秋冬季 rCore 阶段](https://opencamp.cn/os2edu/camp/2026fall/stage/5) 的公开页面数据，课程编号为 2073。页面使用的排行榜查询接口返回 `Alayfolk64` 的已有 0 分记录；该记录并非本轮 rCore 章节上传，不改变上文正向上传尚待完成实验的验收范围。未修改 OpenCamp 后台。
