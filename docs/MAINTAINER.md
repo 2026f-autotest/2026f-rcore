@@ -35,7 +35,7 @@
 
 `main` 与 `ch1` 至 `ch8` 都预装相同的三个 CI 文件。修改公共流程后，把明确修改的 CI 文件同步到各章并分别提交；不要合并不同章的完整代码树。README 和课程文档也应保持一致。
 
-学员 Fork 后只需启用 Actions、设置 Secret、提交实验，不需要运行安装脚本。发布前检查全部九个分支存在、章节源码与选定上游基线一致、真实检查器可以运行、上传脚本正确处理拒绝与重试。验收范围见 [VALIDATION.md](VALIDATION.md)。
+学员 Fork 并克隆后运行 `python3 setup.py`，首次按提示登录 GitHub、输入课程 Token，脚本自动保存 Secret 并启用 Actions。`setup.py` 和 `.github/tests/test_setup.py` 也应同步到所有章节。它只配置当前个人仓库，校验登录账号、仓库所有者及章节是否齐全；已有 Secret 保留原值。发布前检查全部九个分支存在、章节源码与选定上游基线一致、真实检查器可以运行、上传脚本正确处理拒绝与重试。验收范围见 [VALIDATION.md](VALIDATION.md)。
 
 Token 通过课程已有受控渠道提供，公开仓库只出现 Secret 名称。课程 2073 和凭证已沿用此前确认的配置；本模板不涉及修改 OpenCamp 后台。
 
