@@ -8,9 +8,23 @@
 python3 -m unittest discover -s .github/tests
 ```
 
-`-s` 指定回归测试目录；测试不会创建远程仓库或上传真实成绩。Python 语法与 `git diff --check` 检查通过。
+`-s` 指定回归测试目录；测试不会创建远程仓库或上传真实成绩。Python 语法、两份工作流的 YAML 解析与 `git diff --check` 检查通过。
 
-当前远程模板为 `2026f-autotest/2026f-rcore`。组织 Secret 与真实学员仓库的验证结果将在实际运行后记录。
+当前远程模板为 [2026f-autotest/2026f-rcore](https://github.com/2026f-autotest/2026f-rcore)，GitHub API 确认为公开模板（`is_template: true`）。`main`、`ch1` 至 `ch8` 的远端提交已逐个核对，公共配置相同，章节源码相对个人模板未改动。
+
+真实 push 触发的 [ch3 运行 34773627267](https://github.com/2026f-autotest/2026f-rcore/actions/runs/34773627267) 已完成：容器初始化、检出源码、QEMU 测试和日志附件上传均正常。未完成的模板实际得到 `Test passed58547: 5/7`，检查器返回 2，评分结果为 `passed: false`，上传成绩作业跳过。测试失败属于未完成实验的预期结果。
+
+```text
+Panicked at src/bin/ch3_trace.rs:22, assertion failed: 3 <= count_syscall(SYSCALL_GETTIMEOFDAY)
+Test passed58547: 5/7
+AssertionError
+make: *** [Makefile:118: test] Error 1
+Process completed with exit code 2.
+```
+
+原始 GitHub 日志保存于维护者本地 `tmp/org-ch3-34773627267.log`；日志与结果 JSON 同时保存在该运行的附件中。模板仓库没有学员绑定，其配置检查按设计跳过。
+
+组织 Secret 已尝试通过 GitHub 设置页面保存，但浏览器随后无法返回页面内容，因此本记录不认定保存成功，也未确认其访问策略。维护者应在组织 Secrets 列表核对 `ARCEOS_2026_SPRING_TOKEN` 及仓库访问范围。首个学员仓库尚未创建，`enroll.py` 尚未真实执行；本机 GitHub CLI 尚未登录。组织版尚未完成“学员身份 + 共享 Secret + OpenCamp 接受成绩”的完整验收，也没有向真实课程上传模拟分数。
 
 ## 个人仓库版本的历史证据
 
