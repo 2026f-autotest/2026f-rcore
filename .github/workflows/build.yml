@@ -16,7 +16,9 @@ env:
 jobs:
   basic-test:
     name: Test chapter and reports
-    if: contains(fromJSON('["ch3","ch4","ch5","ch6","ch8"]'), github.ref_name)
+    if: >-
+      contains(fromJSON('["ch3","ch4","ch5","ch6","ch8"]'), github.ref_name) &&
+      (github.repository == '2026f-autotest/2026f-rcore' || vars.STUDENT_GITHUB != '')
     runs-on: ubuntu-latest
     timeout-minutes: 25
     container:
