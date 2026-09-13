@@ -1,6 +1,8 @@
 name: Check student configuration
 
 on:
+  push:
+    branches: [ch3, ch4, ch5, ch6, ch8]
   workflow_dispatch:
 
 permissions:
@@ -8,6 +10,7 @@ permissions:
 
 jobs:
   configuration:
+    if: github.repository_owner == '2026f-autotest' && github.event.repository.name != '2026f-rcore'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
