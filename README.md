@@ -7,7 +7,7 @@
 ## 开始实验
 
 1. 在 OpenCamp 加入课程 2073 对应训练营，绑定自己的 GitHub 登录账号。
-2. 点击[领取作业仓库](https://github.com/2026f-autotest/enroll/issues/new?template=enroll.yml)，选择课程 **2073** 并提交申请；等待机器人回复，然后接受仓库邀请。
+2. 点击[领取作业仓库](https://github.com/2026f-autotest/enroll/issues/new?template=rcore.yml)，点击 **Create** 提交申请；等待机器人回复，然后接受仓库邀请。
 3. 克隆分配的作业仓库，切换章节分支，完成实验代码和报告。
 4. push 到 `ch3`、`ch4`、`ch5`、`ch6` 或 `ch8`，在 Actions 查看评测；通过后自动上传累计成绩。
 
