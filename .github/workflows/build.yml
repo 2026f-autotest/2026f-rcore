@@ -44,8 +44,11 @@ jobs:
   report:
     name: Save progress and upload score
     needs: basic-test
-    # A personal fork records its owner's work. Maintainer/bot pushes only test.
-    if: github.actor == github.repository_owner
+    # The template only tests. Each student repository has a maintainer-set login.
+    if: >-
+      github.repository_owner == '2026f-autotest' &&
+      vars.STUDENT_GITHUB != '' &&
+      github.actor == vars.STUDENT_GITHUB
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -59,5 +62,6 @@ jobs:
       - name: Save passed chapter and upload cumulative score
         env:
           ARCEOS_2026_SPRING_TOKEN: ${{ secrets.ARCEOS_2026_SPRING_TOKEN }}
+          STUDENT_GITHUB: ${{ vars.STUDENT_GITHUB }}
           GRADE_POINTS: ${{ needs.basic-test.outputs.points }}
         run: python3 -u .github/scripts/rcore_publish.py

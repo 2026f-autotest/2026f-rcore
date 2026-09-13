@@ -13,6 +13,19 @@ CHAPTERS = ("ch3", "ch4", "ch5", "ch6", "ch8")
 COURSE_ID = 2073
 TOTAL_SCORE = 500
 API_URL = "https://api.opencamp.cn/web/api/courseRank/createByThirdToken"
+ORGANIZATION = "2026f-autotest"
+
+
+def student_login(repository, owner, actor, student):
+    """Bind a course repository to its assigned student, including on retries."""
+    if not re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?", student):
+        raise ValueError("STUDENT_GITHUB must be the student's GitHub login.")
+    expected = f"{ORGANIZATION}/2026f-rcore-{student}"
+    if owner.lower() != ORGANIZATION or repository.lower() != expected.lower():
+        raise ValueError("Repository does not match the assigned course student.")
+    if actor.lower() != student.lower():
+        raise ValueError("Only the assigned student's runs can upload their score.")
+    return student
 
 
 def git(*args, cwd=None):
@@ -68,13 +81,12 @@ def upload_score(payload, token):
 def main():
     token = os.environ.get("ARCEOS_2026_SPRING_TOKEN", "")
     if not token:
-        sys.exit("ARCEOS_2026_SPRING_TOKEN is missing. Add it in this fork's Actions secrets.")
+        sys.exit("ARCEOS_2026_SPRING_TOKEN is missing. Ask the maintainer to authorize this repository in the organization secret.")
     if os.environ.get("OSCAMP_COURSE_ID") != str(COURSE_ID):
         sys.exit("Unexpected course ID; nothing was uploaded.")
     repository = os.environ["GITHUB_REPOSITORY"]
-    user = os.environ["GITHUB_REPOSITORY_OWNER"]
-    if repository.split("/")[0] != user or os.environ["GITHUB_ACTOR"] != user:
-        sys.exit("Only the personal repository owner can upload their score.")
+    user = student_login(repository, os.environ["GITHUB_REPOSITORY_OWNER"],
+                         os.environ["GITHUB_ACTOR"], os.environ.get("STUDENT_GITHUB", ""))
     branch = os.environ["GITHUB_REF_NAME"]
     points = os.environ["GRADE_POINTS"]
     commit = os.environ["GITHUB_SHA"]
