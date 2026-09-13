@@ -20,6 +20,23 @@ publish = load("rcore_publish")
 
 
 class GradingTests(unittest.TestCase):
+    def test_organization_student_mapping(self):
+        self.assertEqual(publish.student_login(
+            "2026f-autotest/2026f-rcore-Alayfolk64", "2026f-autotest",
+            "alayfolk64", "Alayfolk64"), "Alayfolk64")
+
+    def test_reject_unassigned_template_wrong_student_and_personal_fork(self):
+        cases = [
+            ("2026f-autotest/2026f-rcore", "2026f-autotest", "Alayfolk64", ""),
+            ("2026f-autotest/2026f-rcore", "2026f-autotest", "Alayfolk64", "Alayfolk64"),
+            ("2026f-autotest/2026f-rcore-Alayfolk64", "2026f-autotest", "teacher", "Alayfolk64"),
+            ("2026f-autotest/2026f-rcore-Alayfolk64", "2026f-autotest", "other", "other"),
+            ("Alayfolk64/2026f-rcore-Alayfolk64", "Alayfolk64", "Alayfolk64", "Alayfolk64"),
+        ]
+        for case in cases:
+            with self.subTest(case=case), self.assertRaises(ValueError):
+                publish.student_login(*case)
+
     def test_real_randomized_checker_summary(self):
         # Captured from the official checker; its makefile rewrites 'passed'.
         output = "Test trace OK10564!\nTest passed10564: 7/7\nReport for lab1 found.\n"
