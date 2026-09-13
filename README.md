@@ -1,18 +1,19 @@
 # 2026f rCore 操作系统实验
 
-基于 [LearningOS 2026s rCore 课程模板](https://github.com/LearningOS/2026s-oscamp-professional-2026s-rcore-rCore-Tutorial-Code) 整理，供学员 Fork 到个人 GitHub 账号后完成实验、自动测试，并同步 OpenCamp 成绩。
+基于 [LearningOS 2026s rCore 课程模板](https://github.com/LearningOS/2026s-oscamp-professional-2026s-rcore-rCore-Tutorial-Code) 整理，由 [2026f-autotest](https://github.com/2026f-autotest) 统一分配学员仓库、自动评测并同步 OpenCamp。
 
 **课程编号：2073 · 五项实验：每项 100 分 · 总分：500 分**
 
 ## 开始实验
 
-1. 在 OpenCamp 加入对应训练营，绑定自己的 GitHub 账号。
-2. Fork [本仓库](https://github.com/Alayfolk64/2026f-rcore)，**取消勾选 `Copy the main branch only`**，保留 `main` 和 `ch1` 至 `ch8`。
-3. 安装 [GitHub CLI](https://cli.github.com/)，克隆自己的 Fork。
-4. 在仓库根目录运行 `python3 setup.py`，按提示登录 GitHub 并粘贴一次课程 Token。脚本自动保存 Secret 并启用 Actions，已有凭证时保留原值。
-5. 切换实验分支，完成代码和报告后 push。Actions 自动测试，通过后上传累计成绩。
+1. 在 OpenCamp 加入课程 2073 对应训练营，绑定自己的 GitHub 登录账号。
+2. 向维护者提供 GitHub 登录名，接受分配给你的 `2026f-autotest/2026f-rcore-用户名` 仓库邀请。
+3. 克隆分配的作业仓库，切换章节分支，完成实验代码和报告。
+4. push 到 `ch3`、`ch4`、`ch5`、`ch6` 或 `ch8`，在 Actions 查看评测；通过后自动上传累计成绩。
 
-完整操作说明：[从 Fork 到自动评测](docs/FORK_GUIDE.md)。每个章节已经配好 CI，无需 GitHub Classroom，也无需向上游提交 PR。
+**学员无需 Fork、安装 GitHub CLI 或填写课程 Token。** 维护者已在组织中集中配置凭证，并为每个作业仓库绑定学员身份。模板仓库只提供课程内容，不上传学员成绩。
+
+完整操作：[学员领取与提交指南](docs/STUDENT_GUIDE.md)。维护者按[课程配置和建仓流程](docs/MAINTAINER.md)运行 `enroll.py` 分配仓库。
 
 ## 分支与实验报告
 
@@ -36,17 +37,17 @@ push 到 `ch3`、`ch4`、`ch5`、`ch6`、`ch8` 自动触发对应章节评测。
 
 Actions 先执行 **Test chapter and reports**，通过后执行 **Save progress and upload score**。上传日志出现 `OpenCamp accepted the score (result=1).` 表示 OpenCamp 接口接受了成绩；再到学员成绩页面核对显示。
 
-通过记录保存在个人仓库 `gh-pages` 分支的 `course-2073.json`。本仓库固定向课程 **2073** 上传，Secret 沿用 `ARCEOS_2026_SPRING_TOKEN` 这个名称。Token 只存入 Secrets，不写入仓库。
+通过记录保存在学员作业仓库 `gh-pages` 分支的 `course-2073.json`。本仓库固定向课程 **2073** 上传，Secret 沿用 `ARCEOS_2026_SPRING_TOKEN` 这个名称。Token 只存入 Secrets，不写入仓库。
 
 模板保留待完成的实验代码，直接运行时出现测试失败属于预期结果。`main`、`ch1`、`ch2`、`ch7` 不计分。
 
 ## 文档与来源
 
-- [学员 Fork 与提交指南](docs/FORK_GUIDE.md)
+- [学员领取与提交指南](docs/STUDENT_GUIDE.md)
 - [课程配置和维护说明](docs/MAINTAINER.md)
 - [验证记录与当前限制](docs/VALIDATION.md)
 - [保留的 2026s 上游说明](docs/UPSTREAM-2026s.md)
 - [rCore 实验指导](https://learningos.github.io/rCore-Tutorial-Guide/)
 - [rCore 教程](https://rcore-os.github.io/rCore-Tutorial-Book-v3/)
 
-本仓库由个人账号维护，保留上游源码历史，按 [GPL-3.0](LICENSE) 许可分发。
+本仓库由 2026f-autotest 组织维护，保留上游源码历史，按 [GPL-3.0](LICENSE) 许可分发。
