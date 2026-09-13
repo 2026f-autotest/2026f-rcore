@@ -20,14 +20,14 @@ jobs:
       !startsWith(github.event.repository.name, 'preparing-') &&
       contains(fromJSON('["ch3","ch4","ch5","ch6","ch8"]'), github.ref_name) &&
       (github.repository == '2026f-autotest/2026f-rcore' || vars.STUDENT_GITHUB != '')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     container:
-      image: alicesama/rcore-ci:2024a
+      image: alicesama/rcore-ci@sha256:6e5706f0cfb8e5d3cf705d6c1069b42865e6ca11c5945a38588d58c2bad903e4 # 2024a
     outputs:
       points: ${{ steps.grade.outputs.points }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
       - name: Run official rCore checker
@@ -35,7 +35,7 @@ jobs:
         run: python3 -u .github/scripts/rcore_grade.py
       - name: Preserve test evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rcore-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
@@ -53,7 +53,7 @@ jobs:
       github.repository_owner == '2026f-autotest' &&
       vars.STUDENT_GITHUB != '' &&
       github.actor == vars.STUDENT_GITHUB
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
       contents: write
@@ -62,7 +62,7 @@ jobs:
       queue: max
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Save passed chapter and upload cumulative score
         env:
           ARCEOS_2026_SPRING_TOKEN: ${{ secrets.ARCEOS_2026_SPRING_TOKEN }}

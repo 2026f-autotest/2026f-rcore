@@ -33,7 +33,7 @@ GitHub Free 支持公开仓库使用组织 Secret。不要选择只允许私有�
 
 ## 3. 学员自助申请
 
-学员点击 README 中的领取链接，选择 **2073** 并提交 Issue。Actions 从 `issue.user.login` 读取学员账号，复制 `main`、`ch1` 至 `ch8`，设置 `STUDENT_GITHUB`、分配该仓库写权限并触发配置检查。机器人回复仓库与邀请链接，学员接受邀请即可开始实验。助教无需名单收集或逐个建仓。
+学员点击 README 中的领取链接，点击 **Create** 提交申请。Actions 从 `issue.user.login` 读取学员账号，复制 `main`、`ch1` 至 `ch8`，设置 `STUDENT_GITHUB`、分配该仓库写权限并触发配置检查。机器人回复仓库与邀请链接，学员接受邀请即可开始实验。助教无需名单收集或逐个建仓。
 
 失败申请由维护者在领取入口的 Actions 输入原 Issue 编号重试；重试仍取原申请人的身份，不会绑定执行重试的助教。无需学员复制 Token 或安装 GitHub CLI。
 
@@ -66,3 +66,11 @@ GitHub 从模板创建章节时会立即产生 push 事件；此时学员变量�
 ## 领取完成的判断
 
 自助入口先使用 `preparing-` 临时仓库名，准备期间评测和上传均跳过。入口等待本次配置检查实际通过后，分配权限，最后改成正式仓库名并回复邀请链接；失败保留临时仓库供重试。网络重试和排队规则见[入口维护流程](https://github.com/2026f-autotest/enroll/blob/main/docs/MAINTAINER.md)。已有正式学员仓库保留代码并重新检查。
+
+## 自动化代码检查与上传重试
+
+`check.yml` 自动执行本课程的自动化回归测试。备用 `enroll.py` 与领取入口使用同一份 `provision.py` 和 `github_api.py`；更新时同步这两份公共文件。
+
+成绩 JSON 的 `upload.status` 为 `accepted` 时表示 OpenCamp 已返回 `result=1`；`pending` 表示尚未记录到接口确认，结合对应 Actions 日志处理。上传失败可重跑上传作业；已保存的真实测试结果不需要重新计算。
+
+[本轮审查与验证记录](https://github.com/2026f-autotest/enroll/blob/main/docs/AUDIT.md)
