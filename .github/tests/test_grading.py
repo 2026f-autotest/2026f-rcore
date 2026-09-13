@@ -65,6 +65,21 @@ class GradingTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             publish.update_progress(state, "another/rcore", "another", "ch4", "7/7", "commit")
 
+    def test_malformed_or_inconsistent_history_is_rejected(self):
+        valid = publish.update_progress({}, "student/rcore", "student", "ch3", "7/7", "commit")
+        for state in [[], dict(valid, totalScore=999), dict(valid, score=500), dict(valid, chapters={"ch3": None})]:
+            with self.assertRaises(ValueError):
+                publish.update_progress(state, "student/rcore", "student", "ch4", "16/16", "commit")
+
+    def test_boolean_response_and_timeout_are_not_success(self):
+        with patch.object(publish, "urlopen", return_value=BytesIO(b'{"result":true}')):
+            with self.assertRaisesRegex(RuntimeError, "rejected"):
+                publish.upload_score({}, "placeholder-only")
+        with patch.object(publish, "urlopen", side_effect=TimeoutError("placeholder-only timeout")):
+            with self.assertRaisesRegex(RuntimeError, "response interrupted") as caught:
+                publish.upload_score({}, "placeholder-only")
+        self.assertNotIn("placeholder-only", str(caught.exception))
+
     def test_http_success_is_not_business_success(self):
         for body in (b'{"result":400,"message":"user is not join"}', b'not JSON'):
             with self.subTest(body=body), patch.object(publish, "urlopen", return_value=BytesIO(body)):
