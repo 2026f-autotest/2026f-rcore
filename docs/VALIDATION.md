@@ -58,3 +58,15 @@ Process completed with exit code 2.
 此前课程 2073 的基础练习联调使用同一个 Token，实际调用接口得到 `OpenCamp accepted the score (result=1).`，证明当时该账号加入训练营后接口接受了请求。该次为 **0/100 的基础练习**，不是本套 rCore 的五章 500 分验收。
 
 本模板按 rCore 原规则配置 500 分累计。未将模拟的 500 分上传到真实课程，也未宣称已经核对 OpenCamp 网页上的 500 分显示。
+
+## 初始化脚本验证（2026-09-14）
+
+新增 `setup.py`，把手动设置 Secret 和启用 Actions 合并为一次运行。全部 13 项回归测试通过，其中 8 项覆盖初始化流程。对命令执行边界进行模拟验证，覆盖首次登录、取消登录、首次设置、重复运行保留凭证、错误账号拒绝、缺少章节拒绝、写入失败停止，以及远端地址校验。课程 Token 通过标准输入传给 GitHub CLI，不进入命令参数或源码文件。
+
+```sh
+python3 -m unittest discover -s .github/tests
+```
+
+在仓库根目录执行全部回归测试；`-s` 指定测试文件所在目录。GitHub CLI 的真实 Secret 写入及第二个学员账号的完整初始化尚未运行，本机 CLI 登录检查返回 `You are not logged into any GitHub hosts. To log in, run: gh auth login`。这些模拟用例不代表第二个真实账号已经配置成功。
+
+本次未修改评分工作流、检查器或上传协议，之前五个分支的真实 CI 验证仍对应当前评分实现。
