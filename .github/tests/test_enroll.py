@@ -39,6 +39,8 @@ class EnrollmentTests(unittest.TestCase):
             return None
         if path.endswith("/collaborators/student"):
             return {"id": 456}
+        if path.endswith("/dispatches"):
+            return None
         self.fail(f"Unexpected API request: {method} {path}")
 
     def test_create_all_branches_bind_student_before_inviting(self):
@@ -49,7 +51,8 @@ class EnrollmentTests(unittest.TestCase):
         self.assertTrue(generated[2]["include_all_branches"])
         self.assertFalse(generated[2]["private"])
         self.assertEqual(self.variable, {"name": "STUDENT_GITHUB", "value": "student"})
-        self.assertEqual(self.calls[-1], ("PUT", self.endpoint + "/collaborators/student", {"permission": "push"}))
+        self.assertEqual(self.calls[-2], ("PUT", self.endpoint + "/collaborators/student", {"permission": "push"}))
+        self.assertEqual(self.calls[-1], ("POST", self.endpoint + "/actions/workflows/check-config.yml/dispatches", {"ref": "main"}))
         self.assertTrue(any(call[1].endswith("/repositories/123") for call in self.calls))
 
     def test_retry_keeps_repository_and_existing_identity(self):
@@ -58,7 +61,7 @@ class EnrollmentTests(unittest.TestCase):
         self.variable = {"name": "STUDENT_GITHUB", "value": "student"}
         with patch.object(enroll, "api", side_effect=self.api):
             enroll.enroll({"login": "student"}, {"visibility": "all"})
-        self.assertFalse(any(method == "POST" for method, _, _ in self.calls))
+        self.assertTrue(all(method != "POST" or path.endswith("/dispatches") for method, path, _ in self.calls))
         self.assertFalse(any("/secrets/" in path for _, path, _ in self.calls))
 
     def test_existing_unrelated_repository_is_not_modified(self):
