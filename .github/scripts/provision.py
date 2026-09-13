@@ -110,6 +110,15 @@ def publish_repository(preparing, final_repository, repository_id):
                 raise
             print(str(error), flush=True)
             delay = max(delay, error.retry_after or 0)
+            if error.status in {403, 429} and error.temporary:
+                # A rejected rate-limit request did not rename the repository.
+                # Do not issue even a reconciliation GET before the allowed wait.
+                if attempt == 4:
+                    raise
+                if time.monotonic() + delay + REQUEST_TIMEOUT > deadline:
+                    raise RuntimeError(f"Rename requires waiting {delay}s; no early retry was sent. Retry the application later.")
+                time.sleep(delay)
+                continue
             existing = api("GET", "repos/" + final_repository, missing_ok=True)
             if existing is not None and existing["id"] == repository_id:
                 return
