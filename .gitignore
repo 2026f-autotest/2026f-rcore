@@ -12,3 +12,4 @@ os/last-*
 os/.gdb_history
 os/vendor/
 *.bak
+students.txt
