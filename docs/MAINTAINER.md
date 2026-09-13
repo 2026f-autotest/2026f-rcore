@@ -23,7 +23,7 @@
 
 组织所有者把课程代码和 `main`、`ch1` 至 `ch8` 放入公开模板仓库，在仓库 Settings → General 勾选 **Template repository**。模板不要设置 `STUDENT_GITHUB`，避免将课程模板作为学员提交。
 
-在[组织 Actions Secrets](https://github.com/organizations/2026f-autotest/settings/secrets/actions)添加 `ARCEOS_2026_SPRING_TOKEN`，值使用课程 2073 的上传 Token。当前组织的 Repository access 已由维护者确认设置为 **Public repositories**，新建公开课程仓库可直接使用，无需逐仓库添加 Secret。建仓脚本也兼容日后改用指定仓库范围的情况。凭证名称沿用现有课程，实际上传课程固定为 2073。
+在[组织 Actions Secrets](https://github.com/organizations/2026f-autotest/settings/secrets/actions)添加 `ARCEOS_2026_SPRING_TOKEN`，值使用课程 2073 的上传 Token。当前组织已设置为 **Public repositories**，API 与首个学员仓库的 CI 已确认共享 Secret 可用，新建公开课程仓库无需逐仓库添加 Secret。建仓脚本也兼容日后改用指定仓库范围的情况。凭证名称沿用现有课程，实际上传课程固定为 2073。
 
 GitHub Free 支持公开仓库使用组织 Secret。不要选择只允许私有仓库的策略。见[组织 Secret 文档](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets#creating-secrets-for-an-organization)。
 
@@ -52,6 +52,8 @@ python3 enroll.py
 ```
 
 脚本读取名单，先检查组织 Owner 权限、公开模板、全部章节、组织 Secret 策略和所有学员账号，然后逐个创建仓库并配置身份、Secret 访问权限、评分工作流和学员写入权限。输出仓库链接，并在配置完成后自动触发 **Check student configuration**；学员收到邀请后需要接受。
+
+只接入一名学员时，也可以直接执行 `python3 enroll.py 学员GitHub登录名`。已用 `Alayfolk64` 实际完成建仓和重复执行验证，见[验证记录](VALIDATION.md)。
 
 它不会覆盖已有作业代码、已有学员绑定或课程 Token。重复运行会继续配置属于本模板且账号匹配的仓库。配置中途失败会保留仓库，报出原始 API 错误，修复后重新运行。
 
