@@ -32,8 +32,10 @@ jobs:
           sys.path.insert(0, '.github/scripts')
           from rcore_publish import student_login
           student = os.environ['STUDENT_GITHUB']
-          student_login(os.environ['GITHUB_REPOSITORY'],
-                        os.environ['GITHUB_REPOSITORY_OWNER'], student, student)
+          owner, name = os.environ['GITHUB_REPOSITORY'].split('/', 1)
+          # Preparation must pass before the repository receives its final name.
+          repository = owner + '/' + name.removeprefix('preparing-')
+          student_login(repository, os.environ['GITHUB_REPOSITORY_OWNER'], student, student)
           if not os.environ.get('COURSE_TOKEN'):
               sys.exit('Missing organization course secret; contact the maintainer.')
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
