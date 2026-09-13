@@ -17,6 +17,7 @@ jobs:
   basic-test:
     name: Test chapter and reports
     if: >-
+      !startsWith(github.event.repository.name, 'preparing-') &&
       contains(fromJSON('["ch3","ch4","ch5","ch6","ch8"]'), github.ref_name) &&
       (github.repository == '2026f-autotest/2026f-rcore' || vars.STUDENT_GITHUB != '')
     runs-on: ubuntu-latest
@@ -48,6 +49,7 @@ jobs:
     needs: basic-test
     # The template only tests. Each student repository has a maintainer-set login.
     if: >-
+      !startsWith(github.event.repository.name, 'preparing-') &&
       github.repository_owner == '2026f-autotest' &&
       vars.STUDENT_GITHUB != '' &&
       github.actor == vars.STUDENT_GITHUB
