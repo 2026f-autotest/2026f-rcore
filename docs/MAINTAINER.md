@@ -1,4 +1,6 @@
-# 2026f rCore 维护说明
+# 2026f rCore 组织维护流程
+
+组织：`2026f-autotest`。模板：`2026f-autotest/2026f-rcore`。学员仓库：`2026f-autotest/2026f-rcore-登录名`。
 
 ## 版本与课程配置
 
@@ -15,28 +17,62 @@
 | 上传地址 | `https://api.opencamp.cn/web/api/courseRank/createByThirdToken` |
 | 计分规则 | `ch3/ch4/ch5/ch6/ch8` 各 100 分，共 500 分 |
 
-这是个人账号维护的 2026f 课程模板，保留 2026s 各章源码与历史；不代表上游另行发布了 2026f 版本。原始 main 说明保存在 [UPSTREAM-2026s.md](UPSTREAM-2026s.md)。GPL-3.0 许可证与原源码一并保留。
+课程内容沿用 2026s 的各章节源码和历史，原始说明保存在 [UPSTREAM-2026s.md](UPSTREAM-2026s.md)，许可证为 GPL-3.0。
 
-## 执行链路
+## 1. 配置模板和组织凭证
 
-`.github/workflows/build.yml` 负责触发和权限；`.github/scripts/rcore_grade.py` 负责执行固定版本的官方测试；`.github/scripts/rcore_publish.py` 负责累计通过章节及上传成绩。
+组织所有者把课程代码和 `main`、`ch1` 至 `ch8` 放入公开模板仓库，在仓库 Settings → General 勾选 **Template repository**。模板不要设置 `STUDENT_GITHUB`，避免将课程模板作为学员提交。
 
-测试作业不注入成绩上传 Token。它保留 `make test` 的真实退出状态，同时要求唯一的 `Test passed: N/M` 结果为满分，因此报告缺失导致的失败不会被输出解析覆盖。通过结果才传给上传作业。
+在[组织 Actions Secrets](https://github.com/organizations/2026f-autotest/settings/secrets/actions)添加 `ARCEOS_2026_SPRING_TOKEN`，值使用课程 2073 的上传 Token。Repository access 选择 **Selected repositories**，先允许模板仓库；建仓脚本会为新学员仓库追加授权。凭证名称沿用现有课程，实际上传课程固定为 2073。
 
-上传作业只接受个人仓库所有者触发的运行，使用 `contents: write` 保存成绩记录。API 请求中的 `name` 取 `github.repository_owner`，`courseId` 固定 2073，`totalScore` 固定 500。接口 HTTP 成功但业务字段 `result` 不为 1 时，任务仍失败。
+GitHub Free 支持公开仓库使用组织 Secret。不要选择只允许私有仓库的策略。见[组织 Secret 文档](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets#creating-secrets-for-an-organization)。
 
-## 章节累计与重试
+## 2. 维护者完成一次 GitHub 登录
 
-累计记录为 `gh-pages:course-2073.json`，包含课程、仓库、用户、通过章节及对应代码提交。脚本会拒绝不同课程或账号的历史；不会导入旧课堂的 `latest.json`。不需要配置 GitHub Pages。
+维护者本机安装 Python 3 和 [GitHub CLI](https://cli.github.com/)，在本课程仓库根目录执行：
 
-先保存章节记录，再调用上传接口。上传失败后重试仍使用已保存记录；同一章节最多贡献 100 分。上传作业按仓库串行排队，采用 `queue: max`，最多保留 100 个等待作业，避免连续提交时覆盖尚未记录的章节。参考 [GitHub 并发队列说明](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency)。
+```sh
+gh auth login --hostname github.com --git-protocol ssh --web --skip-ssh-key --scopes admin:org
+```
 
-## 更新模板
+`--hostname` 指定 GitHub，`--git-protocol ssh` 选择 SSH，`--web` 在浏览器登录，`--skip-ssh-key` 保留现有 SSH 配置，`--scopes admin:org` 让维护者能够管理组织 Secret 的仓库授权。请使用本组织 Owner 账号。GitHub 登录授权与 OpenCamp 课程 Token 是两种凭证；课程 Token 不传给建仓脚本。
 
-`main` 与 `ch1` 至 `ch8` 都预装相同的三个 CI 文件。修改公共流程后，把明确修改的 CI 文件同步到各章并分别提交；不要合并不同章的完整代码树。README 和课程文档也应保持一致。
+这些安装和登录步骤只由维护者执行，学员不需要。
 
-学员 Fork 并克隆后运行 `python3 setup.py`，首次按提示登录 GitHub、输入课程 Token，脚本自动保存 Secret 并启用 Actions。`setup.py` 和 `.github/tests/test_setup.py` 也应同步到所有章节。它只配置当前个人仓库，校验登录账号、仓库所有者及章节是否齐全；已有 Secret 保留原值。发布前检查全部九个分支存在、章节源码与选定上游基线一致、真实检查器可以运行、上传脚本正确处理拒绝与重试。验收范围见 [VALIDATION.md](VALIDATION.md)。
+## 3. 按学员名单创建仓库
 
-Token 通过课程已有受控渠道提供，公开仓库只出现 Secret 名称。课程 2073 和凭证已沿用此前确认的配置；本模板不涉及修改 OpenCamp 后台。
+```sh
+cp students.example.txt students.txt
+```
 
-个人 Fork 的所有者能够修改自己的 CI 与成绩记录，因此这套流程提供课程练习的自动评测和同步；如将其用于需要防篡改的正式考试，评分应另由管理员控制的执行环境完成。
+创建本地名单文件，每行填写一个 GitHub 登录名。`students.txt` 已被 Git 忽略，不会提交到模板。
+
+```sh
+python3 enroll.py
+```
+
+脚本读取名单，先检查组织 Owner 权限、公开模板、全部章节、组织 Secret 策略和所有学员账号，然后逐个创建仓库并配置身份、Secret 访问权限、评分工作流和学员写入权限。输出仓库链接；学员收到邀请后需要接受。
+
+它不会覆盖已有作业代码、已有学员绑定或课程 Token。重复运行会继续配置属于本模板且账号匹配的仓库。配置中途失败会保留仓库，报出原始 API 错误，修复后重新运行。
+
+GitHub 的模板生成可能需要等待章节出现，脚本最多等待约一分钟。批量邀请仍受 GitHub 的速率和邀请限制约束；出现限制时保留已完成仓库，按返回错误稍后继续。
+
+## 4. 核对配置并让学员提交
+
+在新学员仓库 Actions 中运行 **Check student configuration**。该工作流检查仓库名、`STUDENT_GITHUB` 和组织 Token 是否可用，不打印 Token、不调用 OpenCamp，也不表示课程 Token 已通过服务端验证。
+
+学员完成[提交指南](STUDENT_GUIDE.md)。其 push 到评分章节会触发官方测试，通过后累计成绩并调用 OpenCamp。只有接口返回 `result=1` 才视为上传成功，最后核对 OpenCamp 学员成绩页面。
+
+## 评测和身份规则
+
+`build.yml` 负责触发和作业权限；`rcore_grade.py` 执行固定版本的官方检查器，保留真实退出状态、唯一测试摘要与报告检查；`rcore_publish.py` 保存已通过章节并上传。
+
+每个作业仓库的变量 `STUDENT_GITHUB` 由建仓脚本写入 GitHub 官方返回的登录名。上传脚本要求组织为 `2026f-autotest`，仓库名为 `2026f-rcore-该登录名`，触发账号也匹配。维护者或机器人替别人 push 只会测试，不会上报为另一名学员。
+
+累计记录保存在 `gh-pages:course-2073.json`。每章通过记 100 分，同章重试不重复加分。历史记录绑定课程、仓库与学员，不导入旧课堂的 `latest.json`。上传作业串行排队，先保存记录再调用接口；接口失败后可以重试。无需配置 GitHub Pages 网站。
+
+## 更新课程公共文件
+
+公共文件包括 `.github/` 下的工作流、脚本和回归测试，以及 README、docs、`enroll.py`、`students.example.txt` 和 `.gitignore`。应同步到 `main` 与 `ch1` 至 `ch8`，保留各章原始实验代码，不把整条章节分支互相合并。
+
+模板更新不会自动进入已经分配的学员仓库。更新旧学员仓库时只同步明确修改的公共文件，并保留学员代码、报告和成绩历史。

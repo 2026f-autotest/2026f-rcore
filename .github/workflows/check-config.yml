@@ -1,0 +1,37 @@
+name: Check student configuration
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  configuration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Check student identity and shared course secret
+        env:
+          STUDENT_GITHUB: ${{ vars.STUDENT_GITHUB }}
+          COURSE_TOKEN: ${{ secrets.ARCEOS_2026_SPRING_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import sys
+          sys.path.insert(0, '.github/scripts')
+          from rcore_publish import student_login
+          student = os.environ['STUDENT_GITHUB']
+          student_login(os.environ['GITHUB_REPOSITORY'],
+                        os.environ['GITHUB_REPOSITORY_OWNER'], student, student)
+          if not os.environ.get('COURSE_TOKEN'):
+              sys.exit('Missing organization course secret; contact the maintainer.')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write(f'Course: 2073\n\nStudent: {student}\n\n'
+                            'Organization secret is available. No score was uploaded.\n')
+          print('Student mapping and organization secret are configured. No score was uploaded.')
+          PY
