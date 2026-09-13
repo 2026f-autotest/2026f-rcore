@@ -23,7 +23,7 @@
 
 组织所有者把课程代码和 `main`、`ch1` 至 `ch8` 放入公开模板仓库，在仓库 Settings → General 勾选 **Template repository**。模板不要设置 `STUDENT_GITHUB`，避免将课程模板作为学员提交。
 
-在[组织 Actions Secrets](https://github.com/organizations/2026f-autotest/settings/secrets/actions)添加 `ARCEOS_2026_SPRING_TOKEN`，值使用课程 2073 的上传 Token。Repository access 选择 **Selected repositories**，先允许模板仓库；建仓脚本会为新学员仓库追加授权。凭证名称沿用现有课程，实际上传课程固定为 2073。
+在[组织 Actions Secrets](https://github.com/organizations/2026f-autotest/settings/secrets/actions)添加 `ARCEOS_2026_SPRING_TOKEN`，值使用课程 2073 的上传 Token。当前组织的 Repository access 已由维护者确认设置为 **Public repositories**，新建公开课程仓库可直接使用，无需逐仓库添加 Secret。建仓脚本也兼容日后改用指定仓库范围的情况。凭证名称沿用现有课程，实际上传课程固定为 2073。
 
 GitHub Free 支持公开仓库使用组织 Secret。不要选择只允许私有仓库的策略。见[组织 Secret 文档](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets#creating-secrets-for-an-organization)。
 
@@ -35,7 +35,7 @@ GitHub Free 支持公开仓库使用组织 Secret。不要选择只允许私有�
 gh auth login --hostname github.com --git-protocol ssh --web --skip-ssh-key --scopes admin:org
 ```
 
-`--hostname` 指定 GitHub，`--git-protocol ssh` 选择 SSH，`--web` 在浏览器登录，`--skip-ssh-key` 保留现有 SSH 配置，`--scopes admin:org` 让维护者能够管理组织 Secret 的仓库授权。请使用本组织 Owner 账号。GitHub 登录授权与 OpenCamp 课程 Token 是两种凭证；课程 Token 不传给建仓脚本。
+`--hostname` 指定 GitHub，`--git-protocol ssh` 选择 SSH，`--web` 在浏览器登录，`--skip-ssh-key` 保留现有 SSH 配置，`--scopes admin:org` 让脚本能够检查组织 Secret 配置，并在使用指定仓库范围时追加授权。请使用本组织 Owner 账号。GitHub 登录授权与 OpenCamp 课程 Token 是两种凭证；课程 Token 不传给建仓脚本。
 
 这些安装和登录步骤只由维护者执行，学员不需要。
 

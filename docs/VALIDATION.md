@@ -24,7 +24,7 @@ Process completed with exit code 2.
 
 原始 GitHub 日志保存于维护者本地 `tmp/org-ch3-34773627267.log`；日志与结果 JSON 同时保存在该运行的附件中。模板仓库没有学员绑定，其配置检查按设计跳过。
 
-组织 Secret 已尝试通过 GitHub 设置页面保存，但浏览器随后无法返回页面内容，因此本记录不认定保存成功，也未确认其访问策略。维护者应在组织 Secrets 列表核对 `ARCEOS_2026_SPRING_TOKEN` 及仓库访问范围。首个学员仓库尚未创建，`enroll.py` 尚未真实执行；本机 GitHub CLI 尚未登录。组织版尚未完成“学员身份 + 共享 Secret + OpenCamp 接受成绩”的完整验收，也没有向真实课程上传模拟分数。
+维护者已在 GitHub 页面确认组织 Secret `ARCEOS_2026_SPRING_TOKEN` 存在，访问范围为 **Public repositories**。这是维护者确认的配置状态，尚未通过学员仓库 CI 读取验证。首个学员仓库尚未创建，`enroll.py` 尚未真实执行；本机 GitHub CLI 尚未登录。组织版尚未完成“学员身份 + 共享 Secret + OpenCamp 接受成绩”的完整验收，也没有向真实课程上传模拟分数。
 
 ## 个人仓库版本的历史证据
 
