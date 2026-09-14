@@ -1,10 +1,10 @@
-# 2026f rCore：领取仓库到自动评测
+# 专业阶段 - rCore-Tutorial：领取仓库到自动评测
 
-课程 **2073** 的作业仓库由 `2026f-autotest` 组织分配。学员无需填写 Token、运行初始化脚本或安装 GitHub CLI。
+本课程的作业仓库由 `2026f-autotest` 组织分配。
 
 ## 1. 绑定账号并接受邀请
 
-在 [OpenCamp rCore 阶段](https://opencamp.cn/os2edu/camp/2026fall/stage/5)加入课程 2073，并绑定自己实际使用的 GitHub 登录账号。
+在 [OpenCamp rCore 阶段](https://opencamp.cn/os2edu/camp/2026fall/stage/5)加入 **专业阶段 - rCore-Tutorial**，并绑定自己实际使用的 GitHub 登录账号。
 
 点击[领取作业仓库](https://github.com/2026f-autotest/enroll/issues/new?template=rcore.yml)，点击 **Create** 提交申请。系统直接读取申请人的 GitHub 登录名，不需要手填账号。等待机器人回复，打开邀请链接并接受仓库协作邀请。
 
@@ -24,7 +24,7 @@ git clone git@github.com:2026f-autotest/2026f-rcore-YOUR_GITHUB_LOGIN.git
 cd 2026f-rcore-YOUR_GITHUB_LOGIN
 ```
 
-进入刚克隆的仓库。组织 Secret 由 GitHub 在 CI 运行时提供，克隆到本地的源码不包含凭证。
+进入刚克隆的仓库。
 
 ## 3. 完成并提交实验
 
@@ -66,7 +66,7 @@ git push origin ch3
 2. **Save progress and upload score**：记录已通过章节，将累计成绩上传到 OpenCamp。日志显示 `OpenCamp accepted the score (result=1).` 表示接口接受了成绩。
 3. 返回 OpenCamp 的学员成绩页面刷新，核对自己账号与课程。接口接受成绩与网页实际显示是两个验收步骤。
 
-运行附件包含 `rcore-grade.log` 和 `rcore-result.json`，保留 30 天。成功记录保存在自己仓库 `gh-pages` 分支的 `course-2073.json`；无需开启 GitHub Pages 网站服务。
+运行附件包含 `rcore-grade.log` 和 `rcore-result.json`，保留 30 天。成功记录保存在自己仓库 `gh-pages` 分支的成绩文件；无需开启 GitHub Pages 网站服务。
 
 只推送未完成的模板代码时，测试失败是正常结果，不会上传通过成绩。
 
@@ -96,11 +96,11 @@ git push origin ch3
 | 测试没有全部通过 | 查看 Actions 日志，修改代码或报告后重新 push |
 | N/N 但任务失败 | 继续查看报告检查及检查器退出状态；N/N 本身不足以通过 |
 | 上传作业被跳过 | 联系维护者核对 `STUDENT_GITHUB`；只有对应学员触发的运行上传成绩 |
-| 提示课程 Secret 缺失 | 联系维护者授权组织 Secret，无需学员配置 Token |
+| 提示课程 Secret 缺失 | 联系维护者检查课程配置 |
 | `user is not join` | 在 OpenCamp 加入训练营，并绑定分配仓库时使用的 GitHub 账号 |
 | 写入 `gh-pages` 返回 403 | 联系维护者检查工作流 `contents: write` 权限及组织 Actions 策略 |
 | 上传接口返回其他错误 | 保留返回错误信息，交由维护者检查课程配置 |
 
-维护者可以运行 **Check student configuration** 检查身份与组织 Secret 是否可用。该检查不上传成绩，也不验证 Token 在 OpenCamp 的有效性。
+维护者可以运行 **Check student configuration** 检查作业仓库配置。
 
 账号或权限修复后，可重跑原工作流。上传失败时已通过章节的记录保留，重试不会重复加分。
