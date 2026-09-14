@@ -60,7 +60,7 @@ def prepare_repository(repository, template, course, login, course_id):
             api("POST", "repos/" + template + "/generate", {
                 "owner": ORGANIZATION, "name": repository.split("/", 1)[1],
                 "private": False, "include_all_branches": True,
-                "description": f"Preparing OpenCamp {course_id} coursework for {login}",
+                "description": f"{course['title']} - {login}",
             }, retry=True)
         except GitHubError as error:
             if not error.temporary and error.status != 422:
@@ -189,5 +189,4 @@ def provision(login, course_id, course):
         check_url = check_url.replace(repository, final_repository, 1)
         print("Preparation passed; formal repository published: " + final_repository, flush=True)
     return "https://github.com/" + final_repository, check_url
-
 
