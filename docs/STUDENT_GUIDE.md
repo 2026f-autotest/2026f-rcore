@@ -4,7 +4,7 @@
 
 ## 1. 绑定账号并接受邀请
 
-在 [OpenCamp rCore 阶段](https://opencamp.cn/os2edu/camp/2026fall/stage/5)加入 **专业阶段 - rCore-Tutorial**，并绑定自己实际使用的 GitHub 登录账号。
+加入 [OpenCamp 秋冬季训练营](https://opencamp.cn/os2edu/camp/2026fall)，并绑定自己实际使用的 GitHub 账号。
 
 点击[领取作业仓库](https://github.com/2026f-autotest/enroll/issues/new?template=rcore.yml)，点击 **Create** 提交申请。系统直接读取申请人的 GitHub 登录名，不需要手填账号。等待机器人回复，打开邀请链接并接受仓库协作邀请。
 
@@ -97,7 +97,7 @@ git push origin ch3
 | N/N 但任务失败 | 继续查看报告检查及检查器退出状态；N/N 本身不足以通过 |
 | 上传作业被跳过 | 联系维护者核对 `STUDENT_GITHUB`；只有对应学员触发的运行上传成绩 |
 | 提示课程 Secret 缺失 | 联系维护者检查课程配置 |
-| `user is not join` | 在 OpenCamp 加入训练营，并绑定分配仓库时使用的 GitHub 账号 |
+| `user is not join` | 加入 [OpenCamp 秋冬季训练营](https://opencamp.cn/os2edu/camp/2026fall)，并绑定分配仓库时使用的 GitHub 账号 |
 | 写入 `gh-pages` 返回 403 | 联系维护者检查工作流 `contents: write` 权限及组织 Actions 策略 |
 | 上传接口返回其他错误 | 保留返回错误信息，交由维护者检查课程配置 |
 
