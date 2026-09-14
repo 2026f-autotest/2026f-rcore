@@ -1,17 +1,15 @@
-# 2026f rCore 操作系统实验
+# 专业阶段 - rCore-Tutorial
 
 基于 [LearningOS 2026s rCore 课程模板](https://github.com/LearningOS/2026s-oscamp-professional-2026s-rcore-rCore-Tutorial-Code) 整理，由 [2026f-autotest](https://github.com/2026f-autotest) 统一分配学员仓库、自动评测并同步 OpenCamp。
 
-**课程编号：2073 · 五项实验：每项 100 分 · 总分：500 分**
+**五项实验：每项 100 分 · 总分：500 分**
 
 ## 开始实验
 
-1. 在 OpenCamp 加入课程 2073 对应训练营，绑定自己的 GitHub 登录账号。
+1. 在 OpenCamp 加入本阶段训练营，绑定自己的 GitHub 登录账号。
 2. 点击[领取作业仓库](https://github.com/2026f-autotest/enroll/issues/new?template=rcore.yml)，点击 **Create** 提交申请；等待机器人回复，然后接受仓库邀请。
 3. 克隆分配的作业仓库，切换章节分支，完成实验代码和报告。
 4. push 到 `ch3`、`ch4`、`ch5`、`ch6` 或 `ch8`，在 Actions 查看评测；通过后自动上传累计成绩。
-
-**学员无需 Fork、安装 GitHub CLI 或填写课程 Token。** 凭证由维护者在组织中集中配置，领取程序自动读取申请人并绑定学员身份。模板仓库只提供课程内容，不上传学员成绩。
 
 完整操作：[学员领取与提交指南](docs/STUDENT_GUIDE.md)。维护者按[课程配置和建仓流程](docs/MAINTAINER.md)维护自助领取入口。
 
@@ -37,7 +35,7 @@ push 到 `ch3`、`ch4`、`ch5`、`ch6`、`ch8` 自动触发对应章节评测。
 
 Actions 先执行 **Test chapter and reports**，通过后执行 **Save progress and upload score**。上传日志出现 `OpenCamp accepted the score (result=1).` 表示 OpenCamp 接口接受了成绩；再到学员成绩页面核对显示。
 
-通过记录保存在学员作业仓库 `gh-pages` 分支的 `course-2073.json`。本仓库固定向课程 **2073** 上传，Secret 沿用 `ARCEOS_2026_SPRING_TOKEN` 这个名称。Token 只存入 Secrets，不写入仓库。
+通过记录保存在学员作业仓库 `gh-pages` 分支的成绩文件中。
 
 模板保留待完成的实验代码，直接运行时出现测试失败属于预期结果。`main`、`ch1`、`ch2`、`ch7` 不计分。
 
