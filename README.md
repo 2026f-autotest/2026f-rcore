@@ -11,7 +11,7 @@
 3. 克隆分配的作业仓库，切换章节分支，完成实验代码和报告。
 4. push 到 `ch3`、`ch4`、`ch5`、`ch6` 或 `ch8`，在 Actions 查看评测；通过后自动上传累计成绩。
 
-完整操作：[学员领取与提交指南](docs/STUDENT_GUIDE.md)。维护者按[课程配置和建仓流程](docs/MAINTAINER.md)维护自助领取入口。
+完整操作：[学员指南](docs/STUDENT_GUIDE.md)。
 
 ## 分支与实验报告
 
@@ -39,13 +39,8 @@ Actions 先执行 **Test chapter and reports**，通过后执行 **Save progress
 
 模板保留待完成的实验代码，直接运行时出现测试失败属于预期结果。`main`、`ch1`、`ch2`、`ch7` 不计分。
 
-## 文档与来源
+## 学员指南
 
-- [学员领取与提交指南](docs/STUDENT_GUIDE.md)
-- [课程配置和维护说明](docs/MAINTAINER.md)
-- [验证记录与当前限制](docs/VALIDATION.md)
-- [保留的 2026s 上游说明](docs/UPSTREAM-2026s.md)
-- [rCore 实验指导](https://learningos.github.io/rCore-Tutorial-Guide/)
-- [rCore 教程](https://rcore-os.github.io/rCore-Tutorial-Book-v3/)
+- [学员指南](docs/STUDENT_GUIDE.md)
 
 本仓库由 2026f-autotest 组织维护，保留上游源码历史，按 [GPL-3.0](LICENSE) 许可分发。
